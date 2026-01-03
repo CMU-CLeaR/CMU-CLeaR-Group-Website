@@ -9,3 +9,7 @@ _site
 Gemfile_old_lock
 vendor
 .idea/
+
+# over 100MB
+assets/data/CBMS2023CourseMaterials.zip
+
