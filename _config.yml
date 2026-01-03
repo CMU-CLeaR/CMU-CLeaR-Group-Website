@@ -8,14 +8,15 @@ middle_name:
 last_name: Group
 email:
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  CLeaR group is led by [Prof. Kun Zhang](https://www.andrew.cmu.edu/user/kunz1/) at CMU. Our research interests lie 
+  CLeaR group is led by [Kun Zhang](https://www.andrew.cmu.edu/user/kunz1/) at CMU. Our research interests lie 
   in machine learning and artificial intelligence, especially in causal discovery and causality-based learning.
 footer_text: >
   Templates from <a href="https://github.com/alshedivat/al-folio" target="_blank">al-folio</a> and <a 
-  href="https://sailing-lab.github.io" target="_blank">sailing-lab.</a>
-icon: 
-url: https://cmu-clear.github.io # the base hostname & protocol for your site
-baseurl: # the subpath of your site, e.g. /blog/
+  href="https://sailing-lab.github.io" target="_blank">sailing-lab</a>.
+# Image from <a href="https://www.dkimages.com" target="_blank">DK Images</a>.
+icon:
+url: https://www.cmu.edu # the base hostname & protocol for your site
+baseurl: /dietrich/causality # the subpath of your site, e.g. /blog/
 last_updated: true # set to true if you want to display last updated in the footer
 impressum_path:  # set to path to include impressum link in the footer, use the same path as permalink in a page, helps to conform with EU GDPR
 
@@ -128,7 +129,7 @@ include: ['_pages']
 exclude:
   - bin
   - Gemfile
-  - Gemfile.lock
+  - Gemfile_old_lock
   - vendor
 keep_files:
   - CNAME
