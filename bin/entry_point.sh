@@ -13,7 +13,7 @@ if [ "${JEKYLL_DRAFTS:-false}" = "true" ]; then
 fi
 
 start_jekyll() {
-    bundle exec jekyll serve --watch --port=8080 --host=0.0.0.0 --livereload --verbose --trace --force_polling $DRAFTS_FLAG &
+    bundle exec jekyll serve --watch --port=8080 --host=0.0.0.0 --livereload --verbose --trace --force_polling --future $DRAFTS_FLAG &
 }
 
 start_jekyll

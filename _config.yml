@@ -82,8 +82,6 @@ blog_name: Blog
 blog_description: CMU-CLeaR Group Blog
 permalink: /blog/:year/:title/
 
-future: true  # set to true to publish posts with future dates
-
 # Pagination
 pagination:
   enabled: true
