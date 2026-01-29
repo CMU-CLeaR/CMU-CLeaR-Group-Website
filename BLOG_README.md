@@ -80,7 +80,7 @@ View the site at: `http://localhost:8080/dietrich/causality/blog/`.
 
 We use a **fork-based PR workflow** to keep the main repository clean. All contributors (including group members) should follow this process.
 
-### First-Time Setup
+### First-Time Setup (Everyone)
 
 ```bash
 # 1. Fork the repository on GitHub (click "Fork" button on the repo page)
@@ -98,32 +98,149 @@ git remote -v
 # upstream  https://github.com/CMU-CLeaR/CMU-CLeaR-Group-Website.git (original)
 ```
 
-### Contributing a New Post
+---
+
+### Scenario A: Single-Author Blog Post
+
+**Example**: Alice writes a post about "Causal Discovery Methods"
 
 ```bash
-# 1. Ensure your main branch is up-to-date with upstream
+# 1. Sync with upstream
 git checkout main
 git fetch upstream
 git merge upstream/main
 git push origin main
 
 # 2. Create a feature branch
-git checkout -b blog/your-post-title
+git checkout -b blog/causal-discovery-methods
 
-# 3. Write your post in _drafts/, add images and .bib files
+# 3. Write your post
+#    - Create: _drafts/2026-03-01-causal-discovery-methods.md
+#    - Add images to: assets/img/blogs/2026-03-01-causal-discovery-methods/
+#    - Add bibliography: assets/bibliography/2026-03-01-causal-discovery-methods.bib
 
-# 4. When ready to publish, move to _posts/
-mv _drafts/YYYY-MM-DD-title.md _posts/YYYY-MM-DD-title.md
+# 4. Preview locally
+JEKYLL_DRAFTS=true docker-compose up --build
 
-# 5. Commit and push to YOUR fork
+# 5. When ready, move draft to posts
+mv _drafts/2026-03-01-causal-discovery-methods.md _posts/
+
+# 6. Commit and push
 git add .
-git commit -m "Add blog post: [Title]"
-git push origin blog/your-post-title
+git commit -m "Add blog post: Causal Discovery Methods"
+git push origin blog/causal-discovery-methods
 
-# 6. Create a Pull Request on GitHub
-#    From: YOUR-USERNAME/CMU-CLeaR-Group-Website:blog/your-post-title
+# 7. Create PR on GitHub
+#    From: alice/CMU-CLeaR-Group-Website:blog/causal-discovery-methods
 #    To:   CMU-CLeaR/CMU-CLeaR-Group-Website:main
 ```
+
+---
+
+### Scenario B: Multi-Author Collaborative Post
+
+When multiple authors contribute to a single post, designate one person as the **Lead Author** who owns the PR. There are two recommended approaches:
+
+#### Option 1: Shared Fork (Recommended for Close Collaboration)
+
+The lead author grants collaborators push access to their fork.
+
+**Example**: Alice (lead) and Bob co-author "Identifiability in Causal Models"
+
+**Step 1: Alice sets up the branch**
+```bash
+# Alice creates the branch on her fork
+git checkout main && git pull upstream main
+git checkout -b blog/identifiability-causal-models
+git push origin blog/identifiability-causal-models
+```
+
+**Step 2: Alice adds Bob as a collaborator**
+1. Go to `github.com/alice/CMU-CLeaR-Group-Website` → Settings → Collaborators
+2. Add Bob's GitHub username
+3. Bob accepts the invitation via email/GitHub notification
+
+**Step 3: Bob clones Alice's fork**
+```bash
+# Bob adds Alice's fork as a remote
+git remote add alice https://github.com/alice/CMU-CLeaR-Group-Website.git
+git fetch alice
+git checkout -b blog/identifiability-causal-models alice/blog/identifiability-causal-models
+```
+
+**Step 4: Both authors contribute**
+```bash
+# Bob makes changes and pushes to Alice's fork
+git add .
+git commit -m "Add section on linear identifiability"
+git push alice blog/identifiability-causal-models
+
+# Alice pulls Bob's changes
+git pull origin blog/identifiability-causal-models
+```
+
+**Step 5: Alice creates the PR when ready**
+```bash
+# Move to _posts/ and create PR
+mv _drafts/2026-03-15-identifiability-causal-models.md _posts/
+git add . && git commit -m "Add blog post: Identifiability in Causal Models"
+git push origin blog/identifiability-causal-models
+# Create PR from alice/...:blog/identifiability-causal-models → CMU-CLeaR/...:main
+```
+
+#### Option 2: PR-Based Review (Recommended for Async Collaboration)
+
+Co-authors contribute through GitHub's PR review features without needing fork access.
+
+**Example**: Alice (lead) writes the initial draft, Bob reviews and suggests changes
+
+**Step 1: Alice creates the draft PR**
+```bash
+# Alice creates branch, writes initial content, and opens a Draft PR
+git checkout -b blog/causal-representation
+# ... write content ...
+git push origin blog/causal-representation
+# On GitHub: Create "Draft Pull Request"
+```
+
+**Step 2: Bob reviews via GitHub**
+- Bob opens the PR on GitHub
+- Uses "Add a suggestion" in review comments to propose text changes
+- Alice can click "Commit suggestion" to accept inline
+
+**Step 3: Bob can also push directly (if given access)**
+```bash
+# If Alice enabled "Allow edits from maintainers" on the PR,
+# Bob (with write access to upstream) can push directly:
+git fetch origin pull/42/head:blog/causal-representation
+git checkout blog/causal-representation
+# ... make changes ...
+git push origin blog/causal-representation
+```
+
+**Step 4: Finalize and merge**
+- Alice marks PR as "Ready for Review" when complete
+- After approval, squash-merge into main
+
+---
+
+### Multi-Author Front Matter
+
+For collaborative posts, list all authors in the YAML front matter:
+
+```yaml
+authors:
+  - name: Alice Chen
+    url: "https://alice-chen.github.io"
+    affiliations:
+      name: CLeaR, CMU
+  - name: Bob Smith
+    url: "https://bobsmith.com"
+    affiliations:
+      name: CLeaR, CMU
+```
+
+---
 
 ### After Your PR is Merged
 
@@ -142,31 +259,47 @@ git push origin --delete blog/your-post-title
 
 # 4. Clean up stale remote references
 git fetch --prune
+
+# 5. (For collaborators) Remove the collaborator's remote if no longer needed
+git remote remove alice  # Bob removes Alice's fork remote
 ```
+
+---
 
 ### Visual Workflow
 
+**Single Author:**
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  Original Repo (CMU-CLeaR/CMU-CLeaR-Group-Website)          │
+│  CMU-CLeaR/CMU-CLeaR-Group-Website (upstream)               │
 │  main: ──●──●──●────────────────[squashed commit]──►        │
 └─────────────────────────────────────────────────────────────┘
-                    ▲                    ▲
-                    │ PR (Squash Merge)  │ fetch upstream
-                    │                    │
-┌─────────────────────────────────────────────────────────────┐
-│  Your Fork (YOUR-USERNAME/CMU-CLeaR-Group-Website)          │
-│  main: ──●──●──●                                            │
-│  blog/your-post: ──●──A──B──C  (push here, then PR)         │
-└─────────────────────────────────────────────────────────────┘
                     ▲
-                    │ push origin
+                    │ PR (Squash Merge)
                     │
 ┌─────────────────────────────────────────────────────────────┐
-│  Your Local Machine                                         │
-│  main: synced with upstream                                 │
-│  blog/your-post: your working branch                        │
+│  alice/CMU-CLeaR-Group-Website (fork)                       │
+│  blog/post-title: ──●──A──B──C                              │
 └─────────────────────────────────────────────────────────────┘
+```
+
+**Multi-Author (Shared Fork):**
+```
+┌─────────────────────────────────────────────────────────────┐
+│  CMU-CLeaR/CMU-CLeaR-Group-Website (upstream)               │
+│  main: ──●──●──●────────────────[squashed commit]──►        │
+└─────────────────────────────────────────────────────────────┘
+                    ▲
+                    │ PR (Squash Merge)
+                    │
+┌─────────────────────────────────────────────────────────────┐
+│  alice/CMU-CLeaR-Group-Website (lead author's fork)         │
+│  blog/collab-post: ──●──A(alice)──B(bob)──C(alice)──►       │
+└─────────────────────────────────────────────────────────────┘
+                    ▲               ▲
+                    │               │
+              Alice pushes     Bob pushes
+              (origin)         (alice remote)
 ```
 
 ---
