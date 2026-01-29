@@ -59,17 +59,60 @@ d-contents {
 }
 
 @media (max-width: 1024px) {
-  d-contents {
-    display: block;
-    grid-column: text;
-    position: relative;
-    top: 0;
-    margin-bottom: 2em;
-    padding-right: 0;
-    padding-left: 0;
-    border-right: none;
-    border-bottom: 1px solid $grey-color-light;
-    padding-bottom: 1em;
+  d-article {
+    // Reset d-contents (table of contents) for mobile
+    d-contents {
+      display: block;
+      grid-column-start: 2;
+      grid-column-end: -2;
+      position: relative;
+      top: 0;
+      width: 100%;
+      margin-bottom: 1em;
+      padding: 0.5em 0;
+      border: 1px solid $grey-color-light;
+      border-right: none;
+      border-left: none;
+
+      nav {
+        grid-column: none;
+      }
+    }
+
+    // Reset aside (margin notes) for mobile - display inline with content
+    aside {
+      grid-column: text;
+      width: 100%;
+      margin: 1em 0;
+      padding: 0.5em 1em;
+      border-left: 2px solid $grey-color-light;
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    // Ensure figures don't overflow on mobile
+    figure {
+      max-width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+    }
+  }
+}
+
+// Extra small screens (phones in portrait)
+@media (max-width: 576px) {
+  d-article {
+    d-contents {
+      padding: 0.5em;
+    }
+
+    aside {
+      font-size: 0.9em;
+    }
   }
 }
 
