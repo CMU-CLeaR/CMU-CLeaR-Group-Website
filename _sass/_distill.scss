@@ -2,6 +2,77 @@
  * Style overrides for distill blog posts.
  ******************************************************************************/
 
+d-contents {
+  align-self: start;
+  grid-column: 1 / 4;
+  grid-row: auto / span 4;
+  justify-self: end;
+  margin-top: 0;
+  padding-right: 3em;
+  padding-left: 2em;
+  border-right: 1px solid $grey-color-light;
+  position: sticky;
+  top: 2em;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  nav {
+    h3 {
+      margin-top: 0;
+      margin-bottom: 1em;
+      color: var(--global-text-color);
+    }
+
+    a {
+      color: var(--global-text-color);
+      border-bottom: none;
+      text-decoration: none;
+
+      &:hover {
+        color: var(--global-hover-color);
+      }
+    }
+
+    div {
+      margin-bottom: 0.5em;
+
+      > a {
+        font-weight: bold;
+      }
+    }
+
+    ul {
+      padding-left: 1em;
+      margin-top: 0;
+      margin-bottom: 0.5em;
+      list-style: none;
+
+      li {
+        margin-bottom: 0.25em;
+
+        a {
+          font-weight: normal;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  d-contents {
+    display: block;
+    grid-column: text;
+    position: relative;
+    top: 0;
+    margin-bottom: 2em;
+    padding-right: 0;
+    padding-left: 0;
+    border-right: none;
+    border-bottom: 1px solid $grey-color-light;
+    padding-bottom: 1em;
+  }
+}
+
 d-byline {
   border-top-color: $grey-color-light !important;
 }
