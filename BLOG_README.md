@@ -44,7 +44,7 @@ toc:
 ```
 
 ### Content Features
-- **Math**: Use `$...$` for inline math and `$$...$$` for display blocks (MathJax).
+- **Math**: Use `$$...$$` for both inline math and display blocks (MathJax).
 - **Citations**: Use `<d-cite key="ref_id"></d-cite>` to cite from your `.bib` file.
 - **Asides**: Use `<aside>Your side note here</aside>` for marginalia.
 
