@@ -1,114 +1,109 @@
-# Blog Contributor Guide
+# CMU-CLeaR Blog Contributor Guide
 
-This guide explains how to write, preview, and submit blog posts to the CMU-CLeaR Group website.
+This guide outlines the workflow for contributing research blog posts to the CMU-CLeaR group website. The site is built with Jekyll using the `al-folio` template with `distill` layout support.
 
-## Quick Start
+---
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/CMU-CLeaR/CMU-CLeaR-Group-Website.git
-cd CMU-CLeaR-Group-Website
-```
+## 1. Lifecycle of a Blog Post
 
-### 2. Create Your Draft
-Create a new file in the `_drafts/` folder with format `YYYY-MM-DD-your-title.md`:
+1.  **Drafting**: Create a file in `_drafts/` to work privately.
+2.  **Previewing**: Run a local server to see changes in real-time.
+3.  **Publishing**: Move the file to `_posts/` and submit a Pull Request.
+4.  **Deployment**: Once merged to `main`, the post goes live automatically.
 
-```bash
-touch _drafts/2025-02-01-my-new-post.md
-```
+---
 
-### 3. Write Your Post
-Use this template:
+## 2. Writing Your Post
 
-```markdown
+### File Naming
+Files must follow the format: `YYYY-MM-DD-title-of-post.md` (e.g., `2026-02-01-identifiability.md`).
+
+### Front Matter (Template)
+Every post starts with a YAML header. Use the following template for consistency:
+
+```yaml
 ---
 layout: distill
 title: "Your Post Title"
-date: 2025-02-01
-description: "A brief description of your post"
-tags: tag1 tag2
+description: "A brief summary for the blog list page"
+date: 2026-02-01
+
+# Citations (Optional)
+bibliography: 2026-02-01-identifiability.bib
 
 authors:
   - name: Your Name
     url: "https://your-website.com"
     affiliations:
       name: CLeaR, CMU
+
+toc:
+  - name: Introduction
+  - name: Main Theory
+---
+```
+
+### Content Features
+- **Math**: Use `$...$` for inline math and `$$...$$` for display blocks (MathJax).
+- **Citations**: Use `<d-cite key="ref_id"></d-cite>` to cite from your `.bib` file.
+- **Asides**: Use `<aside>Your side note here</aside>` for marginalia.
+
 ---
 
-Your content here. You can use:
-- Markdown formatting
-- LaTeX math: $E = mc^2$ or $$\int_0^\infty e^{-x} dx$$
-- Images, code blocks, etc.
-```
+## 3. Assets & Bibliography
 
-### 4. Preview Locally with Docker
+To keep the repository clean, please follow these directory conventions:
 
-**To preview drafts** (recommended during development):
+- **Images**: Place in `assets/img/blogs/YYYY-MM-DD-title/`.
+  - *Reference as*: `/dietrich/causality/assets/img/blogs/YYYY-MM-DD-title/fig1.png`
+- **Bibliography**: Place in `assets/bibliography/`.
+  - *Name*: `YYYY-MM-DD-title.bib`
+
+---
+
+## 4. Local Development & Preview
+
+We recommend using Docker to ensure your environment matches the production server.
+
 ```bash
+# Preview WITH drafts (Development mode)
 JEKYLL_DRAFTS=true docker-compose up --build
-```
 
-**To preview without drafts** (matches production):
-```bash
+# Preview WITHOUT drafts (Production mode)
 docker-compose up --build
 ```
+View the site at: `http://localhost:8080/dietrich/causality/blog/`.
 
-Open http://localhost:8080/dietrich/causality/blog/ in your browser. The site auto-reloads when you save changes.
+---
 
-### 5. Submit Your Post
+## 5. Submission Workflow
 
-When ready to publish:
+We use a branch-based PR workflow. If you are working on multiple posts, create a separate branch for each.
 
-1. **Create a new branch:**
-   ```bash
-   git checkout -b blog/your-post-name
-   ```
-
-2. **Move your draft to posts** (or keep in drafts for review):
-   ```bash
-   # If ready for immediate publication after merge:
-   mv _drafts/2025-02-01-my-new-post.md _posts/2025-02-01-my-new-post.md
-
-   # Or keep in _drafts/ if you want feedback before publishing
-   ```
-
-3. **Commit and push:**
-   ```bash
-   git add .
-   git commit -m "Add blog post: Your Post Title"
-   git push origin blog/your-post-name
-   ```
-
-4. **Create a Pull Request** on GitHub and request review.
-
-## Folder Structure
-
-| Folder | Purpose |
-|--------|---------|
-| `_drafts/` | Work-in-progress posts (not visible in production) |
-| `_posts/` | Published posts (visible on the live site) |
-
-## Tips
-
-- **Images:** Place in `assets/img/blogs` and reference as `![alt](/dietrich/causality/assets/img/YYYY-MM-DD-your-title/image.png)`
-- **Math:** LaTeX is enabled. Use `$...$` for inline and `$$...$$` for display math
-- **Date:** The date in the filename determines the post order
-- **Preview drafts:** Always use `JEKYLL_DRAFTS=true` when developing to see your draft posts
-
-## Troubleshooting
-
-**Docker issues:**
+### Step 1: Create a Feature Branch
 ```bash
-docker-compose down
-docker-compose up --build
+git checkout -b blog/your-post-title
 ```
 
-**Port already in use:**
+### Step 2: Finalize for Publication
+Move your post from the drafts folder to the posts folder:
 ```bash
-docker-compose down
-# Or change port in docker-compose.yml
+mv _drafts/YYYY-MM-DD-title.md _posts/YYYY-MM-DD-title.md
 ```
 
-**Changes not showing:**
-- Check browser cache (hard refresh: Cmd+Shift+R or Ctrl+Shift+R)
-- Ensure livereload is connected (check terminal output)
+### Step 3: Commit & Push
+```bash
+git add .
+git commit -m "Add blog post: [Title]"
+git push origin blog/your-post-title
+```
+
+### Step 4: Create a Pull Request
+Use the GitHub CLI or web interface to create a PR against the `main` branch. Provide a brief summary of the post's contributions.
+
+---
+
+## Tips & Troubleshooting
+- **Live Reload**: The Docker container supports live reload. Most changes show up instantly after saving, but changes to `_config.yml` require a container restart.
+- **Base URL**: Always include `/dietrich/causality` in hardcoded links to assets.
+- **Clean Up**: If Docker acts up, run `docker-compose down` followed by a fresh `up --build`.
