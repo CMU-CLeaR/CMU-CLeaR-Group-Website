@@ -251,8 +251,8 @@ git fetch upstream
 git merge upstream/main
 git push origin main
 
-# 2. Delete your local feature branch
-git branch -d blog/your-post-title
+# 2. Delete your local feature branch (use -D because squash-merge creates new commit hashes)
+git branch -D blog/your-post-title
 
 # 3. Delete the remote branch on your fork
 git push origin --delete blog/your-post-title
